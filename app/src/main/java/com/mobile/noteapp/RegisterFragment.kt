@@ -35,7 +35,13 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSignUp.setOnClickListener {
-            authViewModel.registerUser(UserRequest("test.t123@gmail.com","111111","ttttttttt3"))
+            val validateResult=validateUserInput()
+            if (validateResult.first){
+                authViewModel.registerUser(getUserRequest())
+            }else{
+                binding.txtError.text=validateResult.second
+            }
+
 
         }
         binding.btnLogin.setOnClickListener {
@@ -45,12 +51,16 @@ class RegisterFragment : Fragment() {
         bindObserve()
     }
 
-    private fun validateUserInput(): Pair<Boolean, String> {
+    private fun getUserRequest(): UserRequest {
         val emailAddress=binding.txtEmail.text.toString().trim()
         val password=binding.txtPassword.text.toString().trim()
         val username=binding.txtUsername.text.toString().trim()
+        return UserRequest(emailAddress,password, username)
+    }
 
-        return authViewModel.validateCredentials(emailAddress,password,username)
+    private fun validateUserInput(): Pair<Boolean, String> {
+        val userRequest=getUserRequest()
+        return authViewModel.validateCredentials(userRequest.email,userRequest.password,userRequest.username)
     }
 
     private fun bindObserve() {
