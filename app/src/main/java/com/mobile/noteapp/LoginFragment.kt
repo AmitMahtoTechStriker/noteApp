@@ -45,8 +45,6 @@ class LoginFragment : Fragment() {
             }else{
                 binding.txtError.text=validateResult.second
             }
-
-
         }
         binding.btnSignUp.setOnClickListener {
             findNavController().popBackStack()
@@ -63,7 +61,7 @@ class LoginFragment : Fragment() {
 
     private fun validateUserInput(): Pair<Boolean, String> {
         val userRequest=getUserRequest()
-        return authViewModel.validateCredentials(userRequest.email,userRequest.username,"",true)
+        return authViewModel.validateCredentials(userRequest.email,"",userRequest.password,true)
     }
 
     private fun bindObserve() {
